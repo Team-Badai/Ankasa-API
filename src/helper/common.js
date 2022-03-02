@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer')
 
 const baseUrl = `${process.env.BASE_URL}`
 
-export const response = (res, result, status, message, error, pagination) => {
+const response = (res, result, status, message, error, pagination) => {
     let responseMessage
     if (status === 200) {
         responseMessage = 'Success'
@@ -20,7 +20,7 @@ export const response = (res, result, status, message, error, pagination) => {
     })
 }
 
-export const generateToken = (payload) => {
+const generateToken = (payload) => {
     const secretKey = process.env.SECRET_KEY
     const verifyOptions = {
         expiresIn : 60 * 60,
@@ -28,4 +28,9 @@ export const generateToken = (payload) => {
     }
     const result = jwt.sign(payload, secretKey, verifyOptions)
     return result
+}
+
+module.exports = {
+    response,
+    generateToken
 }

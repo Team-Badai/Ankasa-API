@@ -1,4 +1,4 @@
-export const notFoundMessage = (req, res, next) => {
+const notFoundMessage = (req, res, next) => {
     const statusCode = 404
     res.status(statusCode)
     res.json({
@@ -7,4 +7,8 @@ export const notFoundMessage = (req, res, next) => {
         data : null,
         message : "URL NOT FOUND"
     })
+}
+
+module.exports = {
+    notFoundMessage
 }
