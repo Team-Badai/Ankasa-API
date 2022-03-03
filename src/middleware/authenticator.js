@@ -15,7 +15,7 @@ const isAdmin = async (req, res, next) => {
       });
     }
     const verifyOptions = {
-      issuer: "zwallet"
+      issuer: "ankasa"
     };
     const secretKey = process.env.SECRET_KEY;
     const decoded = jwt.verify(token, secretKey, verifyOptions);
@@ -51,7 +51,7 @@ const userTokenVerification = async (req, res, next) => {
       });
     }
     const verifyOptions = {
-      issuer: "zwallet"
+      issuer: "ankasa"
     };
     const secretKey = process.env.SECRET_KEY;
     const decoded = jwt.verify(token, secretKey, verifyOptions);
