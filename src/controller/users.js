@@ -12,7 +12,6 @@ const signUp = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const signupData = {
       id: userId,
-      id_role: "user",
       fullname: fullname,
       email: email,
       password: hashedPassword
