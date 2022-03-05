@@ -41,7 +41,7 @@ const updateVerifiedUser = (fullname, email) => {
 
 const login = (data) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT fullname, email, password, status, id_role FROM users WHERE email = ?`;
+    const sql = `SELECT fullname, email, password, status, id_roles FROM users WHERE email = ?`;
     connection.query(sql, data.email, (error, result) => {
       if (!error) {
         resolve(result);
