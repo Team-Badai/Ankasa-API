@@ -48,7 +48,6 @@ const getFlights = async (req, res, next) => {
                 searchData.wifi = '0'
             }
         }
-        console.log(searchData)
         const result = await flightsQuery.getFlights(searchData)
         response(res, result, 200, 'List of Flights', null)
     } catch (error) {
@@ -57,6 +56,31 @@ const getFlights = async (req, res, next) => {
     }
 }
 
+const getFlightDetails = async (req, res, next) => {
+    try {
+        const {id_flights} = req.body
+        const result = await flightsQuery.getFlightDetail(id_flights)
+        response(res, result, 200, `Flight ${id_flights} details.`, null)
+    } catch (error) {
+        console.log(error.message);
+        next({ status: 500, message: "Internal Server Error!" });
+    }
+}
+
+const booking = async (req, res, next) => {
+    try {
+        const {id_flights, total_seats, class_type, passenger_category} = req.body
+        const {email, status} = req.decoded
+        const [user] = await usersQuery.getDetailsUser(email, )
+        const 
+    } catch (error) {
+        console.log(error.message);
+        next({ status: 500, message: "Internal Server Error!" });
+    }
+}
+
 module.exports = {
-    getFlights
+    getFlights,
+    getFlightDetails,
+    booking
 }
