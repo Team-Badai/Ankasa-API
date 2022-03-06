@@ -81,7 +81,7 @@ const emailTokenVerification = async (req, res, next) => {
     const fullname = decoded.fullname;
     const email = decoded.email;
     const activateUser = await userQuery.updateVerifiedUser(fullname, email);
-    // res.redirect('https://zwallet-tombeng.netlify.app/login')
+    // res.redirect("somewhere")
     commonHelper.response(
       res,
       activateUser,
@@ -100,8 +100,38 @@ const emailTokenVerification = async (req, res, next) => {
   }
 };
 
+const resetPasswordEmailTokenVerification = async (req, res, next) => {
+  try {
+    let token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    } else {
+      return next({ status: 403, message: "Server Need Token" });
+    }
+    const verifyOptions = {
+      issuer: "ankasa"
+    };
+    const secretKey = process.env.SECRET_KEY;
+    const decoded = jwt.verify(token, secretKey, verifyOptions);
+    req.decoded = decoded;
+    next();
+  } catch (error) {
+    if (error && error.name === "JsonWebTokenError") {
+      return next({ status: 400, message: "Invalid Token!" });
+    } else if (error && error.name === "TokenExpiredError") {
+      return next({ status: 400, message: "Token Expired!" });
+    } else {
+      return next({ status: 400, message: "Token Inactive!" });
+    }
+  }
+};
+
 module.exports = {
   isAdmin,
   userTokenVerification,
-  emailTokenVerification
+  emailTokenVerification,
+  resetPasswordEmailTokenVerification
 };
