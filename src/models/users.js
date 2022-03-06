@@ -67,7 +67,7 @@ const findUserEmailLogin = (email) => {
 
 const getStatusByEmail = (email) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT id, id_role, status FROM users WHERE email = ?`;
+    const sql = `SELECT id, id_roles, status FROM users WHERE email = ?`;
     connection.query(sql, email, (error, result) => {
       if (!error) {
         resolve(result);
@@ -93,7 +93,7 @@ const resetUserPassword = (password, email, id) => {
 
 const getDetailsUser = (email, role) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT users.id, users.id_role, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users WHERE email = ? AND id_role = ?`;
+    const sql = `SELECT users.id, users.id_roles, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users WHERE email = ? AND id_roles = ?`;
     connection.query(sql, [email, role], (error, result) => {
       if (!error) {
         resolve(result);
@@ -106,7 +106,7 @@ const getDetailsUser = (email, role) => {
 
 const updateDetailsUser = (data, email, status, role) => {
   return new Promise((resolve, reject) => {
-    const sql = `UPDATE users SET ? WHERE email = ? AND status = ? AND id_role = ?`;
+    const sql = `UPDATE users SET ? WHERE email = ? AND status = ? AND id_roles = ?`;
     connection.query(sql, [data, email, status, role], (error, result) => {
       if (!error) {
         resolve(result);
@@ -119,7 +119,7 @@ const updateDetailsUser = (data, email, status, role) => {
 
 const updateProfilePicture = (email, role, profile_picture) => {
   return new Promise((resolve, reject) => {
-    const sql = `UPDATE users SET profile_picture = ? WHERE email = ? AND id_role = ?`;
+    const sql = `UPDATE users SET profile_picture = ? WHERE email = ? AND id_roles = ?`;
     connection.query(sql, [profile_picture, email, role], (error, result) => {
       if (!error) {
         resolve(result);
@@ -132,7 +132,7 @@ const updateProfilePicture = (email, role, profile_picture) => {
 
 const getAllUsers = ({ sort, order, limit, offset }) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT users.id, users.id_role, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users ORDER BY ?? ${order} LIMIT ? OFFSET ?`;
+    const sql = `SELECT users.id, users.id_roles, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users ORDER BY ?? ${order} LIMIT ? OFFSET ?`;
     connection.query(sql, [sort, limit, offset], (error, result) => {
       if (!error) {
         resolve(result);

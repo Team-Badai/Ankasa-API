@@ -76,7 +76,8 @@ const login = async (req, res, next) => {
         if (checkPassword) {
           const payload = {
             email: userLogin.email,
-            status: userLogin.status
+            status: userLogin.status,
+            role: userLogin.id_roles
           };
           const token = commonHelper.generateToken(payload);
           payload.token = token;
@@ -139,7 +140,7 @@ const resetPassword = async (req, res, next) => {
     const { email } = req.decoded;
     const { password } = req.body;
     const [user] = await userQuery.getStatusByEmail(email);
-    if (user.status === 1 && user.id_role === "user") {
+    if (user.status === 1 && user.id_roles === "user") {
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
       const result = await userQuery.resetUserPassword(
