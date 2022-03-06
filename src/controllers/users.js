@@ -77,7 +77,7 @@ const login = async (req, res, next) => {
         if (checkPassword) {
           const payload = {
             email: userLogin.email,
-            role: userLogin.id_role,
+            role: userLogin.role_name,
             status: userLogin.status
           };
           const token = commonHelper.generateToken(payload);
@@ -140,7 +140,7 @@ const resetPassword = async (req, res, next) => {
     const { email } = req.decoded;
     const { password } = req.body;
     const [user] = await userQuery.getStatusByEmail(email);
-    if (user.status === 1 && user.id_role === "user") {
+    if (user.status === 1 && user.role_name === "user") {
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
       const result = await userQuery.resetUserPassword(
@@ -171,9 +171,9 @@ const resetPassword = async (req, res, next) => {
 // User's Profile
 const getProfile = async (req, res, next) => {
   try {
-    const { email, status, role } = req.decoded;
+    const { email, status } = req.decoded;
     if (status === 1) {
-      const [account] = await userQuery.getDetailsUser(email, role);
+      const [account] = await userQuery.getDetailsUser(email);
       commonHelper.response(
         res,
         account,
@@ -194,7 +194,7 @@ const getProfile = async (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
   try {
-    const { role, status } = req.decoded;
+    const { status } = req.decoded;
     const { email, phone_number, fullname, city, address, post_code } =
       req.body;
     const updatedAt = new Date();
@@ -208,12 +208,7 @@ const updateProfile = async (req, res, next) => {
       updated_at: updatedAt
     };
     if (status === 1) {
-      const result = await userQuery.updateDetailsUser(
-        userData,
-        email,
-        status,
-        role
-      );
+      const result = await userQuery.updateDetailsUser(userData, email, status);
       commonHelper.response(
         res,
         userData,
@@ -235,14 +230,13 @@ const updateProfile = async (req, res, next) => {
 
 const updateProfilePicture = async (req, res, next) => {
   try {
-    const { email, role, status } = req.decoded;
+    const { email, status } = req.decoded;
     const fileName = req.file.filename;
     const profile_picture = `${process.env.BASE_URL}/file/${fileName}`;
     const updatedAt = new Date();
     if (status === 1) {
       const result = await userQuery.updateProfilePicture(
         email,
-        role,
         profile_picture
       );
       const profilePictureData = {
