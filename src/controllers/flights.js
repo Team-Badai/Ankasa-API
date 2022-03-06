@@ -48,10 +48,10 @@ const getFlights = async (req, res, next) => {
                 searchData.wifi = '0'
             }
         }
-        console.log(searchData)
         const result = await flightsQuery.getFlights(searchData)
         response(res, result, 200, 'List of Flights', null)
     } catch (error) {
+        console.log(error)
         console.log(error.message);
         next({ status: 500, message: "Internal Server Error!" });
     }

@@ -27,7 +27,6 @@ const getFlights = ({origin_city, destination_city, journey, departure_date, tot
         if (wifi) {
             sql += `AND flights.wifi = ${wifi} `
         }
-        console.log(sql)
         connection.query(sql, (error, result) => {
             if (!error) {
                 resolve(result)

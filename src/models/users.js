@@ -1,4 +1,4 @@
-const connection = require("../config/dbConfig");
+const connection = require('../config/dbConfig')
 
 const signUp = (data) => {
   return new Promise((resolve, reject) => {
