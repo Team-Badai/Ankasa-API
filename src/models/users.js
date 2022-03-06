@@ -41,7 +41,7 @@ const updateVerifiedUser = (fullname, email) => {
 
 const login = (data) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT fullname, email, password, status, id_roles FROM users WHERE email = ?`;
+    const sql = `SELECT users.fullname, users.email, users.password, users.status, roles.role_name FROM users INNER JOIN roles ON users.id_roles = roles.id WHERE email = ?`;
     connection.query(sql, data.email, (error, result) => {
       if (!error) {
         resolve(result);
@@ -67,7 +67,7 @@ const findUserEmailLogin = (email) => {
 
 const getStatusByEmail = (email) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT id, id_role, status FROM users WHERE email = ?`;
+    const sql = `SELECT users.id, roles.role_name, users.status FROM users INNER JOIN roles ON users.id_roles = roles.id WHERE email = ?`;
     connection.query(sql, email, (error, result) => {
       if (!error) {
         resolve(result);
@@ -91,10 +91,10 @@ const resetUserPassword = (password, email, id) => {
   });
 };
 
-const getDetailsUser = (email, role) => {
+const getDetailsUser = (email) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT users.id, users.id_role, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users WHERE email = ? AND id_role = ?`;
-    connection.query(sql, [email, role], (error, result) => {
+    const sql = `SELECT users.id, roles.role_name, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users INNER JOIN roles ON users.id_roles = roles.id WHERE email = ?`;
+    connection.query(sql, email, (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -104,10 +104,10 @@ const getDetailsUser = (email, role) => {
   });
 };
 
-const updateDetailsUser = (data, email, status, role) => {
+const updateDetailsUser = (data, email, status) => {
   return new Promise((resolve, reject) => {
-    const sql = `UPDATE users SET ? WHERE email = ? AND status = ? AND id_role = ?`;
-    connection.query(sql, [data, email, status, role], (error, result) => {
+    const sql = `UPDATE users SET ? WHERE email = ? AND status = ?`;
+    connection.query(sql, [data, email, status], (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -117,10 +117,10 @@ const updateDetailsUser = (data, email, status, role) => {
   });
 };
 
-const updateProfilePicture = (email, role, profile_picture) => {
+const updateProfilePicture = (email, profile_picture) => {
   return new Promise((resolve, reject) => {
-    const sql = `UPDATE users SET profile_picture = ? WHERE email = ? AND id_role = ?`;
-    connection.query(sql, [profile_picture, email, role], (error, result) => {
+    const sql = `UPDATE users SET profile_picture = ? WHERE email = ?`;
+    connection.query(sql, [profile_picture, email], (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -132,7 +132,7 @@ const updateProfilePicture = (email, role, profile_picture) => {
 
 const getAllUsers = ({ sort, order, limit, offset }) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT users.id, users.id_role, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users ORDER BY ?? ${order} LIMIT ? OFFSET ?`;
+    const sql = `SELECT users.id, roles.role_name, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users INNER JOIN roles ON users.id_roles = roles.id ORDER BY ?? ${order} LIMIT ? OFFSET ?`;
     connection.query(sql, [sort, limit, offset], (error, result) => {
       if (!error) {
         resolve(result);
