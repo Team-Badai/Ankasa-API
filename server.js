@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 app.use(cors());
 
 // routes
-app.use("/users", userRoutes);
+app.use('/users', userRoutes);
 app.use('/flights', flightRoutes)
 app.use("/file", express.static("./src/uploads"));
 
