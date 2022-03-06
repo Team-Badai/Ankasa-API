@@ -65,6 +65,71 @@ const findUserEmailLogin = (email) => {
   });
 };
 
+const getStatusByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    const sql = `SELECT id, id_role, status FROM users WHERE email = ?`;
+    connection.query(sql, email, (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
+const resetUserPassword = (password, email, id) => {
+  return new Promise((resolve, reject) => {
+    const sql = `UPDATE users SET password = ? WHERE email = ? AND id = ?`;
+    connection.query(sql, [password, email, id], (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
+const getDetailsUser = (email, role) => {
+  return new Promise((resolve, reject) => {
+    const sql = `SELECT users.id, users.id_role, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users WHERE email = ? AND id_role = ?`;
+    connection.query(sql, [email, role], (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
+const updateDetailsUser = (data, email, status, role) => {
+  return new Promise((resolve, reject) => {
+    const sql = `UPDATE users SET ? WHERE email = ? AND status = ? AND id_role = ?`;
+    connection.query(sql, [data, email, status, role], (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
+const updateProfilePicture = (email, role, profile_picture) => {
+  return new Promise((resolve, reject) => {
+    const sql = `UPDATE users SET profile_picture = ? WHERE email = ? AND id_role = ?`;
+    connection.query(sql, [profile_picture, email, role], (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
 const getAllUsers = ({ sort, order, limit, offset }) => {
   return new Promise((resolve, reject) => {
     const sql = `SELECT users.id, users.id_role, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users ORDER BY ?? ${order} LIMIT ? OFFSET ?`;
@@ -82,19 +147,6 @@ const calculateAccounts = () => {
   return new Promise((resolve, reject) => {
     const sql = `SELECT COUNT(*) AS total FROM users`;
     connection.query(sql, (error, result) => {
-      if (!error) {
-        resolve(result);
-      } else {
-        reject(error);
-      }
-    });
-  });
-};
-
-const getDetailsUser = (email, role) => {
-  return new Promise((resolve, reject) => {
-    const sql = `SELECT users.id, users.id_role, users.fullname, users.email, users.phone_number, users.city, users.address, users.post_code, users.profile_picture, users.created_at, users.updated_at FROM users WHERE email = ? AND id_role = ?`;
-    connection.query(sql, [email, role], (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -137,9 +189,13 @@ module.exports = {
   updateVerifiedUser,
   login,
   findUserEmailLogin,
+  getStatusByEmail,
+  resetUserPassword,
+  updateDetailsUser,
+  updateProfilePicture,
   getAllUsers,
   calculateAccounts,
   getDetailsUser,
-  deleteAccount,
-  getUserIdByEmail
+  getUserIdByEmail,
+  deleteAccount
 };
