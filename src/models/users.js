@@ -41,7 +41,7 @@ const updateVerifiedUser = (fullname, email) => {
 
 const login = (data) => {
   return new Promise((resolve, reject) => {
-    const sql = `SELECT fullname, email, password, status, id_role FROM users WHERE email = ?`;
+    const sql = `SELECT fullname, email, password, status, id_roles FROM users WHERE email = ?`;
     connection.query(sql, data.email, (error, result) => {
       if (!error) {
         resolve(result);
@@ -169,6 +169,20 @@ const deleteAccount = (id) => {
   });
 };
 
+// user model for booking process
+const getUserIdByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    const sql = `SELECT id FROM users WHERE email = ?`
+    connection.query(sql, id, (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    })
+  })
+}
+
 module.exports = {
   signUp,
   findUserEmail,
@@ -177,10 +191,11 @@ module.exports = {
   findUserEmailLogin,
   getStatusByEmail,
   resetUserPassword,
-  getDetailsUser,
   updateDetailsUser,
   updateProfilePicture,
   getAllUsers,
   calculateAccounts,
+  getDetailsUser,
+  getUserIdByEmail,
   deleteAccount
 };

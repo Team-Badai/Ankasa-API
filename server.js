@@ -15,6 +15,7 @@ const io = new Server({
 });
 
 const userRoutes = require("./src/routes/users");
+const flightRoutes = require('./src/routes/flights')
 const { errorHandling } = require("./src/helper/errorHandling");
 const { notFoundMessage } = require("./src/helper/notFound");
 
@@ -25,6 +26,7 @@ app.use(cors());
 
 // routes
 app.use("/users", userRoutes);
+app.use('/flights', flightRoutes)
 app.use("/file", express.static("./src/uploads"));
 
 // URL not found handler
