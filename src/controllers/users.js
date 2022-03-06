@@ -111,6 +111,63 @@ const login = async (req, res, next) => {
   }
 };
 
+const resetPasswordEmail = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const payload = {
+      email: email
+    };
+    console.log(email);
+    if (email === "" || email === undefined) {
+      return next({ status: 403, message: "Please input your email!" });
+    }
+    const token = commonHelper.generateToken(payload);
+    commonHelper.response(
+      res,
+      `Pending`,
+      200,
+      `Please check your email, a verification email has been send to reset your password`
+    );
+    commonHelper.sendEmailResetPasswordVerification(email, token);
+  } catch (error) {
+    console.log(error.message);
+    next({ status: 500, message: "Internal Server Error!" });
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { email } = req.decoded;
+    const { password } = req.body;
+    const [user] = await userQuery.getStatusByEmail(email);
+    if (user.status === 1 && user.id_role === "user") {
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password, salt);
+      const result = await userQuery.resetUserPassword(
+        hashedPassword,
+        email,
+        user.id
+      );
+      commonHelper.response(
+        res,
+        result,
+        200,
+        `User ${email} successfully reset password!`
+      );
+    } else {
+      commonHelper.response(
+        res,
+        `Login Failed`,
+        500,
+        `Sorry, your account is not yet activated.`
+      );
+    }
+  } catch (error) {
+    console.log(error.message);
+    next({ status: 500, message: "Internal Server Error!" });
+  }
+};
+
 // User's Profile
 const getProfile = async (req, res, next) => {
   try {
@@ -122,6 +179,83 @@ const getProfile = async (req, res, next) => {
         account,
         200,
         `Profile with email: ${email} successfully requested!`
+      );
+    } else {
+      next({
+        status: 500,
+        message: "Your account is not activated yet. Please verify your email!"
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    next({ status: 500, message: "Internal Server Error!" });
+  }
+};
+
+const updateProfile = async (req, res, next) => {
+  try {
+    const { role, status } = req.decoded;
+    const { email, phone_number, fullname, city, address, post_code } =
+      req.body;
+    const updatedAt = new Date();
+    const userData = {
+      email: email,
+      phone_number: phone_number,
+      fullname: fullname,
+      city: city,
+      address: address,
+      post_code: post_code,
+      updated_at: updatedAt
+    };
+    if (status === 1) {
+      const result = await userQuery.updateDetailsUser(
+        userData,
+        email,
+        status,
+        role
+      );
+      commonHelper.response(
+        res,
+        userData,
+        200,
+        `User ${email} is successfully updated`,
+        null
+      );
+    } else {
+      next({
+        status: 500,
+        message: "Your account is not activated yet. Please verify your email!"
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    next({ status: 500, message: "Internal Server Error!" });
+  }
+};
+
+const updateProfilePicture = async (req, res, next) => {
+  try {
+    const { email, role, status } = req.decoded;
+    const fileName = req.file.filename;
+    const profile_picture = `${process.env.BASE_URL}/file/${fileName}`;
+    const updatedAt = new Date();
+    if (status === 1) {
+      const result = await userQuery.updateProfilePicture(
+        email,
+        role,
+        profile_picture
+      );
+      const profilePictureData = {
+        email: email,
+        profile_picture: profile_picture,
+        updated_at: updatedAt
+      };
+      commonHelper.response(
+        res,
+        profilePictureData,
+        200,
+        `User ${email}'s profile picture is successfully updated.`,
+        null
       );
     } else {
       next({
@@ -189,7 +323,11 @@ const deleteAccount = async (req, res, next) => {
 module.exports = {
   signUp,
   login,
+  resetPasswordEmail,
+  resetPassword,
   getProfile,
+  updateProfile,
+  updateProfilePicture,
   getAllUsers,
   deleteAccount
 };
