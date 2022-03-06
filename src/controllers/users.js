@@ -68,7 +68,6 @@ const login = async (req, res, next) => {
       );
     } else if (findEmailUser[0].email === data.email) {
       const [userLogin] = await userQuery.login(data);
-      console.log(userLogin);
       if (userLogin.status === 1) {
         const checkPassword = await bcrypt.compare(
           data.password,
@@ -110,6 +109,7 @@ const login = async (req, res, next) => {
     next({ status: 500, message: "Internal Server Error!" });
   }
 };
+
 
 const resetPasswordEmail = async (req, res, next) => {
   try {
@@ -191,6 +191,7 @@ const getProfile = async (req, res, next) => {
     next({ status: 500, message: "Internal Server Error!" });
   }
 };
+
 
 const updateProfile = async (req, res, next) => {
   try {
