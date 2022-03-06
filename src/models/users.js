@@ -169,6 +169,19 @@ const deleteAccount = (id) => {
   });
 };
 
+const getRoleIdByRoleName = (role_name) => {
+  return new Promise ((resolve, reject) => {
+    const sql = `SELECT id FROM roles WHERE role_name = ?`
+    connection.query(sql, role_name, (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    })
+  })
+}
+
 // user model for booking process
 const getUserIdByEmail = (email) => {
   return new Promise((resolve, reject) => {
@@ -197,5 +210,6 @@ module.exports = {
   calculateAccounts,
   getDetailsUser,
   getUserIdByEmail,
+  getRoleIdByRoleName,
   deleteAccount
 };

@@ -18,6 +18,8 @@ const signUp = async (req, res, next) => {
     };
     const findEmail = await userQuery.findUserEmail(fullname, email);
     if (findEmail.length === 0) {
+      const role = await userQuery.getRoleIdByRoleName('user')
+      signupData.id_roles = role[0].id
       const newUser = await userQuery.signUp(signupData);
       console.log(newUser);
       if (newUser.affectedRows > 0) {
