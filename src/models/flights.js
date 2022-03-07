@@ -38,7 +38,7 @@ const getFlights = ({origin_city, destination_city, journey, departure_date, tot
     })
 }
 
-const getFlightDetail = ({id_flight}) => {
+const getFlightDetail = (id_flight) => {
     return new Promise ((resolve, reject) => {
         const sql = `SELECT flights.id, flights.flight_number, flights.journey, flights.departure_date, flights.departure_time, flights.arrival_time, flights.flight_duration, flights.price, 
         flights.luggage, flights.meal, flights.wifi, aircrafts.airline_name, aircrafts.airline_type, 
@@ -57,7 +57,22 @@ const getFlightDetail = ({id_flight}) => {
     })
 }
 
+const getFlightClass = (class_type) => {
+    return new Promise ((resolve, reject) => {
+        const sql = `SELECT * FROM flight_classes WHERE class_type = ?`
+        connection.query(sql, class_type, (error, result) => {
+            if (!error) {
+                resolve(result)
+            } else {
+                reject(error)
+            }
+        })
+    })
+}
+
+
 module.exports = {
     getFlights,
-    getFlightDetail
+    getFlightDetail,
+    getFlightClass,
 }

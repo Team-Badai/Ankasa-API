@@ -67,20 +67,7 @@ const getFlightDetails = async (req, res, next) => {
     }
 }
 
-const booking = async (req, res, next) => {
-    try {
-        const {id_flights, total_seats, class_type, passenger_category} = req.body
-        const {email, status} = req.decoded
-        const [user] = await usersQuery.getDetailsUser(email, )
-        const 
-    } catch (error) {
-        console.log(error.message);
-        next({ status: 500, message: "Internal Server Error!" });
-    }
-}
-
 module.exports = {
     getFlights,
-    getFlightDetails,
-    booking
+    getFlightDetails
 }
