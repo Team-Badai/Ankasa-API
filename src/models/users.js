@@ -173,7 +173,20 @@ const deleteAccount = (id) => {
 const getUserIdByEmail = (email) => {
   return new Promise((resolve, reject) => {
     const sql = `SELECT id FROM users WHERE email = ?`
-    connection.query(sql, id, (error, result) => {
+    connection.query(sql, email, (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    })
+  })
+}
+
+const getPaymentCardDetails = (id_users) => {
+  return new Promise ((resolve, reject) => {
+    const sql = `SELECT * FROM payment_cards WHERE id_users = ?`
+    connection.query(sql,id_users, (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -197,5 +210,6 @@ module.exports = {
   calculateAccounts,
   getDetailsUser,
   getUserIdByEmail,
-  deleteAccount
+  deleteAccount,
+  getPaymentCardDetails
 };
