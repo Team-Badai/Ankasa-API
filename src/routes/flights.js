@@ -4,5 +4,5 @@ const flightController = require('../controllers/flights')
 const {userTokenVerification} = require('../middleware/authenticator')
 
 route.post('/', flightController.getFlights)
-route.get('/details', flightController.getFlightDetails)
+route.post('/details', flightController.getFlightDetails)
 module.exports = route;

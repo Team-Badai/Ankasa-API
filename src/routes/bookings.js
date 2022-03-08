@@ -5,6 +5,6 @@ const {userTokenVerification} = require('../middleware/authenticator')
 
 route.post('/create', userTokenVerification, bookingsController.booking)
 route.get('/my-booking', userTokenVerification, bookingsController.listBookings)
-route.get('/list-tickets', userTokenVerification, bookingsController.bookingDetails)
+route.post('/list-tickets', userTokenVerification, bookingsController.bookingDetails)
 
 module.exports = route;
