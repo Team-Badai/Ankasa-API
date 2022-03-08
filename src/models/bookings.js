@@ -60,7 +60,7 @@ const bookingListDetails = (id_bookings) => {
     })
 }
 
-const getFlightDetailByBookingId = (id_bookings) => {
+const getFlightIDByBookingId = (id_bookings) => {
     return new Promise ((resolve, reject) => {
         const sql = `SELECT id_flights FROM tickets WHERE id_bookings = ?`
         connection.query(sql, id_bookings, (error, result) => {
@@ -125,7 +125,7 @@ module.exports = {
     booking,
     listBookings,
     bookingListDetails,
-    getFlightDetailByBookingId,
+    getFlightIDByBookingId,
     bookingDetails,
     bookingPaymentDetail,
     updatePaymentStatus
