@@ -53,7 +53,7 @@ const getFlights = async (req, res, next) => {
     } catch (error) {
         console.log(error)
         console.log(error.message);
-        next({ status: 500, message: "Internal Server Error!" });
+        next({ status: 500, message: `${error.message}` });
     }
 }
 
