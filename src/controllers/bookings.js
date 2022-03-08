@@ -92,13 +92,13 @@ const listBookings = async (req, res, next) => {
         if (status === 1) {
             const [user] = await usersQuery.getUserIdByEmail(email)
             const [bookingsResult] = await bookingsQuery.listBookings(user.id)
-            const [flight] = await bookingsQuery.getFlightDetailByBookingId(bookingsResult.id)
-            const flightDetails = await flightsQuery.getFlightDetail(flight.id_flights)
-            const listBookingResults = {
-                bookingDetails : bookingsResult,
-                flightDetails : flightDetails
-            }
-            response(res, listBookingResults, 200, `List of booking user ${user.id}`)
+            // const [flight] = await bookingsQuery.getFlightDetailByBookingId(bookingsResult.id)
+            // const flightDetails = await flightsQuery.getFlightDetail(flight.id_flights)
+            // const listBookingResults = {
+            //     bookingDetails : bookingsResult,
+            //     flightDetails : flightDetails
+            // }
+            response(res, bookingsResult, 200, `List of booking user ${user.id}`)
         } else {
             response(res, null, 403, `Please verify your account first`)
         }
