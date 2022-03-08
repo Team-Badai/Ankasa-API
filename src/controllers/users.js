@@ -18,6 +18,8 @@ const signUp = async (req, res, next) => {
     };
     const findEmail = await userQuery.findUserEmail(fullname, email);
     if (findEmail.length === 0) {
+      const role = await userQuery.getRoleIdByRoleName('user')
+      signupData.id_roles = role[0].id
       const newUser = await userQuery.signUp(signupData);
       console.log(newUser);
       if (newUser.affectedRows > 0) {
@@ -47,7 +49,7 @@ const signUp = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -106,7 +108,7 @@ const login = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -131,7 +133,7 @@ const resetPasswordEmail = async (req, res, next) => {
     commonHelper.sendEmailResetPasswordVerification(email, token);
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -164,7 +166,7 @@ const resetPassword = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -188,7 +190,7 @@ const getProfile = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -225,7 +227,7 @@ const updateProfile = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -260,7 +262,7 @@ const updateProfilePicture = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -295,7 +297,7 @@ const getAllUsers = async (req, res, next) => {
     );
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
@@ -311,7 +313,7 @@ const deleteAccount = async (req, res, next) => {
     );
   } catch (error) {
     console.log(error.message);
-    next({ status: 500, message: "Internal Server Error!" });
+    next({ status: 500, message: `${error.message}` });
   }
 };
 
