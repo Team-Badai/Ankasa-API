@@ -96,12 +96,11 @@ const listBookings = async (req, res, next) => {
             for (let i = 0; i < bookingsResult.length; i++) {
                 const idBooking = bookingsResult[i].id
                 const bookingDetails = await bookingsQuery.bookingListDetails(idBooking)
-                const flight = await bookingsQuery.getFlightIDByBookingId(idBooking)
-                // const flightDetails = await flightsQuery.getFlightDetail(flight.id_flights)
+                const [flight] = await bookingsQuery.getFlightIDByBookingId(idBooking)
+                const flightDetails = await flightsQuery.getFlightDetail(flight.id_flights)
                 const bookingFlightDetails = {
-                    // booking_details : bookingDetails,
-                    // flight_details : flightDetails
-                    flight : flight
+                    booking_details : bookingDetails,
+                    flight_details : flightDetails
                 }
                 results.push(bookingFlightDetails)
             }

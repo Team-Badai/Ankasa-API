@@ -62,7 +62,7 @@ const bookingListDetails = (id_bookings) => {
 
 const getFlightIDByBookingId = (id_bookings) => {
     return new Promise ((resolve, reject) => {
-        const sql = `SELECT id_flights FROM tickets WHERE id_bookings = ?`
+        const sql = `SELECT id_flights FROM tickets WHERE id_bookings = ? GROUP BY id_flights`
         connection.query(sql, id_bookings, (error, result) => {
             if (!error) {
                 resolve(result)
