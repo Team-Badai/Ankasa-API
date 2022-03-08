@@ -16,6 +16,8 @@ const io = new Server({
 
 const userRoutes = require("./src/routes/users");
 const flightRoutes = require('./src/routes/flights')
+const bookingsRoutes = require('./src/routes//bookings')
+const paymentsRoutes = require('./src/routes/payments')
 const { errorHandling } = require("./src/helper/errorHandling");
 const { notFoundMessage } = require("./src/helper/notFound");
 
@@ -25,8 +27,10 @@ app.use(morgan("dev"));
 app.use(cors());
 
 // routes
-app.use("/users", userRoutes);
+app.use('/users', userRoutes);
 app.use('/flights', flightRoutes)
+app.use('/bookings', bookingsRoutes)
+app.use('/payments', paymentsRoutes)
 app.use("/file", express.static("./src/uploads"));
 
 // URL not found handler
