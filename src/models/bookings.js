@@ -47,6 +47,19 @@ const listBookings = (id_users) => {
     })
 }
 
+const bookingListDetails = (id_bookings) => {
+    return new Promise ((resolve, reject) => {
+        const sql = `SELECT * FROM bookings WHERE id = ?`
+        connection.query(sql, id_bookings, (error, result) => {
+            if (!error) {
+                resolve(result)
+            } else {
+                reject(error)
+            }
+        })
+    })
+}
+
 const getFlightDetailByBookingId = (id_bookings) => {
     return new Promise ((resolve, reject) => {
         const sql = `SELECT id_flights FROM tickets WHERE id_bookings = ?`
@@ -111,6 +124,7 @@ const updatePaymentStatus = (id_bookings, id_payments) => {
 module.exports = {
     booking,
     listBookings,
+    bookingListDetails,
     getFlightDetailByBookingId,
     bookingDetails,
     bookingPaymentDetail,

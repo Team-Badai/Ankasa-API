@@ -92,13 +92,19 @@ const listBookings = async (req, res, next) => {
         if (status === 1) {
             const [user] = await usersQuery.getUserIdByEmail(email)
             const bookingsResult = await bookingsQuery.listBookings(user.id)
-            // const [flight] = await bookingsQuery.getFlightDetailByBookingId(bookingsResult.id)
-            // const flightDetails = await flightsQuery.getFlightDetail(flight.id_flights)
-            // const listBookingResults = {
-            //     bookingDetails : bookingsResult,
-            //     flightDetails : flightDetails
-            // }
-            response(res, bookingsResult, 200, `List of booking user ${user.id}`)
+            const results = []
+            for (let i = 0; i < bookingsResult.length; i++) {
+                const idBooking = bookingsResult[i].id
+                const bookingDetails = await bookingsQuery.bookingListDetails(idBooking)
+                const [flight] = await bookingsQuery.getFlightIDByBookingId(bookingsResult.id)
+                const flightDetails = await flightsQuery.getFlightDetail(flight.id_flights)
+                const bookingFlightDetails = {
+                    booking_details : bookingDetails,
+                    flight_details : flightDetails
+                }
+                results.push(bookingFlightDetails)
+            }
+            response(res, results, 200, `List of booking user ${user.id}`)
         } else {
             response(res, null, 403, `Please verify your account first`)
         }
