@@ -64,7 +64,7 @@ const getFlightDetails = async (req, res, next) => {
         response(res, result, 200, `Flight ${id_flights} details.`, null)
     } catch (error) {
         console.log(error.message);
-        next({ status: 500, message: "Internal Server Error!" });
+        next({ status: 500, message: `${error.message}` });
     }
 }
 
