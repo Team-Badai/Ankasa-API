@@ -81,7 +81,7 @@ const payment = async (req, res, next) => {
     }
 }
 
-const listCardPayment = (req, res, next) => {
+const listCardPayment = async (req, res, next) => {
     try {
         const {email, status} = req.decoded
         if (status === 1) {
