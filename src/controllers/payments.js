@@ -81,8 +81,25 @@ const payment = async (req, res, next) => {
     }
 }
 
+const listCardPayment = (req, res, next) => {
+    try {
+        const {email, status} = req.decoded
+        if (status === 1) {
+            const [user] = await usersQuery.getUserIdByEmail(email)
+            const cards = await paymentQuery.listCardPayment(user.id)
+            response(res, cards, 200, `List of payment cards of user : ${user.id}`)
+        } else {
+            response(res, null, 403, `Please verify your account first`)
+        }
+    } catch (error) {
+        console.log(error.message);
+        next({ status: 500, message: `${error.message}` });
+    }
+}
+
 module.exports = {
     addPaymentCard,
     bookingPaymentDetail,
-    payment
+    payment,
+    listCardPayment
 }
