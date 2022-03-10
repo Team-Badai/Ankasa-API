@@ -81,7 +81,7 @@ const emailTokenVerification = async (req, res, next) => {
     const fullname = decoded.fullname;
     const email = decoded.email;
     const activateUser = await userQuery.updateVerifiedUser(fullname, email);
-    // res.redirect("somewhere")
+    res.redirect('https://ankasa-ticketing-app.netlify.app/auth/login')
     commonHelper.response(
       res,
       activateUser,
