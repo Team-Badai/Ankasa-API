@@ -10,7 +10,7 @@
   <h3 align="center">Ankasa Backend APIs</h3>
 
   <p align="center">
-    A Backend APIs and Web Service for Ankasa Web Application.
+    A Web Service and Backend APIs for Ankasa Web Application.
     <br />
     <a href="https://github.com/Team-Badai/Ankasa-app"><strong>View Ankasa Web App »</strong></a>
     <br />
@@ -62,17 +62,18 @@ This backend side app was built with some technologies below:
    ```
 3. Set Environtment variable in `.env` file
 
-```
-DB_HOST=YOUR_DB_HOST
-DB_USER=YOUR_DB_USER
-DB_PASSWORD=YOUR_DB_PASSWORD
-DB_NAME=YOUR_TABLE_NAME
-PORT=YOUR_PORT
-SECRET_KEY = YOUR_SECRET_KEY
-URL_EMAIL_CONFIRM = YOUR_EMAIL_VALIDATION_PAGE_FRONTEND
-EMAIL = YOUR_EMAIL_CONFIRMATION
-PASSWORD = YOUR_EMAIL_PASSWORD
-```
+   ```sh
+   DB_HOST = YOUR_DB_HOST
+   DB_USER = YOUR_DB_USER
+   DB_PASSWORD = YOUR_DB_PASSWORD
+   DB_NAME = YOUR_TABLE_NAME
+
+   PORT = YOUR_PORT
+   SECRET_KEY = YOUR_SECRET_KEY
+
+   ADMIN_EMAIL_ACCOUNT = YOUR_EMAIL_CONFIRMATION
+   ADMIN_EMAIL_PASSWORD = YOUR_EMAIL_PASSWORD
+   ```
 
 4. Start the Application
    ```sh
