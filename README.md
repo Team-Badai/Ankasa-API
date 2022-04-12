@@ -51,16 +51,17 @@ This backend side app was built with some technologies below:
 ### Installation
 
 1. Clone the APIs repo
+
    ```sh
    git clone https://github.com/Team-Badai/Ankasa-API.git
    ```
 
-````
 2. Install NPM packages
    ```sh
    npm install
    ```
-3. Set Environtment variable in ```.env``` file
+3. Set Environtment variable in `.env` file
+
 ```
 DB_HOST=YOUR_DB_HOST
 DB_USER=YOUR_DB_USER
@@ -72,11 +73,11 @@ URL_EMAIL_CONFIRM = YOUR_EMAIL_VALIDATION_PAGE_FRONTEND
 EMAIL = YOUR_EMAIL_CONFIRMATION
 PASSWORD = YOUR_EMAIL_PASSWORD
 ```
+
 4. Start the Application
    ```sh
    npm run dev
    ```
-````
 
 ## Postman Collection
 
